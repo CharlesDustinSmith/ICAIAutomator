@@ -1,6 +1,5 @@
 import pandas as pd
 from datetime import datetime
-
 import numpy as np
 import matplotlib.pyplot as plt 
 
@@ -56,7 +55,6 @@ def removeDate(data):
         x = end - start
         finalList.append(x)
 
-    # print(finalList)
     return expandData(finalList)
     
 
@@ -71,7 +69,7 @@ def plotWaveform(data, title, plot, index):
 
 
 fileName = input("Enter file name : ")
-df = pd.read_csv( fileName +'.csv', sep = ',', names = ['start', 'end', 'symbol', 'value', 'unknon', 'other'])
+df = pd.read_csv( fileName + '.csv', sep = ',', names = ['start', 'end', 'symbol', 'value', 'unknon', 'other'])
 data = getTimeList(df)
 
 fig, plot = plt.subplots(len(data))

@@ -70,8 +70,8 @@ def plotWaveform(data, title, plot, index):
     plot[index].set_title(title)
 
 
-
-df = pd.read_csv('TASK1.4.4.csv', sep = ',', names = ['start', 'end', 'symbol', 'value', 'unknon', 'other'])
+fileName = input("Enter file name : ")
+df = pd.read_csv( fileName +'.csv', sep = ',', names = ['start', 'end', 'symbol', 'value', 'unknon', 'other'])
 data = getTimeList(df)
 
 fig, plot = plt.subplots(len(data))

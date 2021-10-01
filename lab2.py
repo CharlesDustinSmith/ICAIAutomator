@@ -56,7 +56,7 @@ def removeDate(data):
         x = end - start
         finalList.append(x)
 
-    print(finalList)
+    # print(finalList)
     return expandData(finalList)
     
 
@@ -71,7 +71,7 @@ def plotWaveform(data, title, plot, index):
 
 
 
-df = pd.read_csv('lab2-2.4.csv', sep = ',', names = ['start', 'end', 'symbol', 'value', 'unknon', 'other'])
+df = pd.read_csv('TASK1.4.4.csv', sep = ',', names = ['start', 'end', 'symbol', 'value', 'unknon', 'other'])
 data = getTimeList(df)
 
 fig, plot = plt.subplots(len(data))

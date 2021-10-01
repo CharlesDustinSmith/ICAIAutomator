@@ -1,21 +1,25 @@
 import pandas as pd
 from datetime import datetime
-import 
+
+import numpy as np
+import matplotlib.pyplot as plt 
 
 
 def getTimeList(data):
-    times = []
+    times = {}
     data = data.reindex(index=data.index[::-1])
     for index , row in data.iterrows():
-        times.append(row['start'])
-        times.append(row['end'])
+        if row['symbol'] not in times.keys():
+               times[row['symbol']] = []
+               
+        times[row['symbol']].append(row['start'])
+        times[row['symbol']].append(row['end'])
     return times
 
 def timeSplitter(data):
     seconds = []
     for i in data:
         seconds.append(i.split(' '))
-    print(seconds)
     return seconds
 
 def timeMinus(data):
@@ -30,41 +34,54 @@ def convertToSeconds(data):
     return seconds
 
 
+def expandData(data):
+    x = 1
+    lst = []
+    for i in range(len(data)):
+        lst += data[i] * [x]
+        x = (x + 1) % 2
+    
+    return lst
+
+
 def removeDate(data):
     newList = []
     finalList = []
     for i in data:
         newList.append(i[9:18])
-    # for i in newList:
-    #     finalList.append(int(i.replace(":", "")))
-    print(newList)
-    print('*'*30)
-    format = '%H:%M:%S'
+        
     for i in range(1,len(newList)):
         end = convertToSeconds(newList[i].split(':'))
         start = convertToSeconds(newList[i - 1].split(':'))
         x = end - start
-    # x = my_list[i] - my_list[i-1]
-        # y = str(x)
         finalList.append(x)
-    # print(finalList)
-
-    # for i in finalList:
-    #     finalList.append(i[5:6])
 
     print(finalList)
-    return finalList
+    return expandData(finalList)
     
 
+def plotWaveform(data, title, plot, index):
+    xs = np.repeat(range(len(data)), 2)
+    ys = np.repeat(data, 2)
+    xs = xs[1:]
+    ys = ys[:-1]
+    plot[index].plot(xs, ys)
+    plot[index].set_yticks(np.arange(0,1.1,1))
+    plot[index].set_title(title)
 
 
 
 df = pd.read_csv('lab2-2.4.csv', sep = ',', names = ['start', 'end', 'symbol', 'value', 'unknon', 'other'])
-newFunction = getTimeList(df)
+data = getTimeList(df)
 
-newValue = removeDate(newFunction)
+fig, plot = plt.subplots(len(data))
+fig.text(0.5, 0.04, 'time (seconds)', ha='center', va='center')
+fig.text(0.06, 0.5, 'state', ha='center', va='center', rotation='vertical')
 
+i = 0
+for key, values in data.items():
+    newValue = removeDate(values)
+    plotWaveform(newValue, key, plot, i)
+    i += 1
 
-#getTimeList(df)
-
-
+plt.show()

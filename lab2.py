@@ -67,9 +67,9 @@ def plotWaveform(data, title, plot, index):
     plot[index].set_yticks(np.arange(0,1.1,1))
     plot[index].set_title(title)
 
-
 fileName = input("Enter file name : ")
 df = pd.read_csv( fileName + '.csv', sep = ',', names = ['start', 'end', 'symbol', 'value', 'unknon', 'other'])
+
 data = getTimeList(df)
 
 fig, plot = plt.subplots(len(data))
